@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: financial-market-intelligence
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: yfinance>=1.5.1
+
+# Financial Market Intelligence System
+
+A modular financial market intelligence platform for quantitative research, portfolio analytics, and trading strategy development.
+
+## Status
+
+🚧 Under Development
