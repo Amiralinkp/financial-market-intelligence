@@ -9,7 +9,7 @@ REQUIRED_COLUMNS = {
     "Volume"}
 
 
-def validate_market_data(data:pd.DataFrame):
+def validate_market_data(data):
 
     missing_columns = REQUIRED_COLUMNS - set(data.columns)
 

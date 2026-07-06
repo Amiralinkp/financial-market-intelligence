@@ -1,6 +1,6 @@
 import pandas as pd 
 
-def add_ema(data: pd.DataFrame, window):
+def add_ema(data, window):
 
     result = data.copy()
     result[f"EMA_{window}"] = (

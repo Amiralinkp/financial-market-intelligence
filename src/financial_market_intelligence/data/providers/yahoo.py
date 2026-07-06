@@ -1,10 +1,7 @@
 import pandas as pd
 import yfinance as yf
 
-from financial_market_intelligence.data.interfaces.market_data_provider import (
-    MarketDataProvider,
-)
-
+from financial_market_intelligence.data.interfaces.market_data_provider import MarketDataProvider
 
 class YahooProvider(MarketDataProvider):
     """Market data provider backed by Yahoo Finance."""

@@ -2,7 +2,7 @@ import pandas as pd
 from financial_market_intelligence.indicators.base import Indicator
 
 
-def apply_indicators(data: pd.DataFrame, indicators: list[Indicator]):
+def apply_indicators(data, indicators: list[Indicator]):
     """
     Apply a sequence of indicators to market data.
     """
