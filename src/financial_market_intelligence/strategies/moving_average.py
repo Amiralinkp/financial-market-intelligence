@@ -16,3 +16,9 @@ class MovingAverageStrategy(BaseStrategy):
     
     def get_name(self):
         return f"EMA({self.fast_window}) / SMA({self.slow_window})"
+    
+    def get_parameters(self):
+    
+       parameters = { "ema_window" : self.fast_window,
+        "sma_window" : self.slow_window }
+       return parameters

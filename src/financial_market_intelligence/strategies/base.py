@@ -10,3 +10,6 @@ class BaseStrategy(ABC):
     @abstractmethod
     def get_name(self):
         pass
+
+    def get_parameters(self):
+        pass

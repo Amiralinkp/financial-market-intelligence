@@ -8,6 +8,7 @@ from financial_market_intelligence.indicators.pipeline import apply_indicators
 from financial_market_intelligence.indicators.ema import add_ema
 from financial_market_intelligence.backtesting.simple_backtester import run_backtest
 from financial_market_intelligence.backtesting.metrics import calculate_performance_metrics
+from financial_market_intelligence.indicators import add_rsi
 
 
 
@@ -29,6 +30,7 @@ def run_strategy(symbol, strategy):
           [add_simple_return,
            lambda data: add_sma(data, window=strategy.slow_window),
            lambda data: add_ema(data, window=strategy.fast_window),
+           lambda data: add_rsi(data, window=14)
            ])
     
     signal_data = strategy.generate_signal(feature_data)
