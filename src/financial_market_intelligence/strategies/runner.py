@@ -24,14 +24,9 @@ def run_strategy(symbol, strategy):
     normalized_data = normalize_market_data(raw_data)
 
     validate_market_data(normalized_data)
-
-    feature_data = apply_indicators(
-        normalized_data,
-          [add_simple_return,
-           lambda data: add_sma(data, window=strategy.slow_window),
-           lambda data: add_ema(data, window=strategy.fast_window),
-           lambda data: add_rsi(data, window=14)
-           ])
+    indicators = strategy.get_required_indicators()
+    feature_data = apply_indicators(normalized_data, indicators)
+          
     
     signal_data = strategy.generate_signal(feature_data)
     backtest_data = run_backtest(signal_data)

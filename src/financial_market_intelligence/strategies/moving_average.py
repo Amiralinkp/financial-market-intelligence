@@ -1,5 +1,11 @@
 from financial_market_intelligence.strategies.base import BaseStrategy
 from financial_market_intelligence.signals.crossover import moving_average_crossover_signal
+from financial_market_intelligence.features.returns import add_simple_return
+from financial_market_intelligence.indicators.sma import add_sma
+from financial_market_intelligence.indicators.ema import add_ema
+
+
+
 
 
 class MovingAverageStrategy(BaseStrategy):
@@ -22,3 +28,11 @@ class MovingAverageStrategy(BaseStrategy):
        parameters = { "ema_window" : self.fast_window,
         "sma_window" : self.slow_window }
        return parameters
+    
+    def get_required_indicators(self):
+        
+        return[add_simple_return,
+            lambda data: add_sma(data, window=self.slow_window),
+            lambda data: add_ema(data, window=self.fast_window),
+
+        ]

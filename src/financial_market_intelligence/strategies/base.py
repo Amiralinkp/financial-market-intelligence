@@ -13,3 +13,6 @@ class BaseStrategy(ABC):
 
     def get_parameters(self):
         pass
+
+    def get_required_indicators(self):
+        raise NotImplementedError

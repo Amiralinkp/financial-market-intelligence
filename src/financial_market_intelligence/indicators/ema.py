@@ -1,11 +1,12 @@
 import pandas as pd 
 
-def add_ema(data, window):
+def add_ema(data, window, source_column="Close", output_column=None):
 
     result = data.copy()
-    result[f"EMA_{window}"] = (
-        result["Close"].ewm(span=window, adjust = False)
-        .mean()
-    )
+    if output_column is None:
+        output_column = f"EMA_{window}"
+
+    result[output_column] = (
+    result[source_column].ewm(span=window, adjust=False).mean())
 
     return result 
