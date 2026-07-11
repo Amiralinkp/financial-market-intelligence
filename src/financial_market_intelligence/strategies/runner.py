@@ -9,8 +9,9 @@ from financial_market_intelligence.indicators.ema import add_ema
 from financial_market_intelligence.backtesting.simple_backtester import run_backtest
 from financial_market_intelligence.backtesting.metrics import calculate_performance_metrics
 from financial_market_intelligence.indicators import add_rsi
-
-
+from financial_market_intelligence.models.run_result import RunResult
+from financial_market_intelligence.models.execution_result import ExecutionResult
+from financial_market_intelligence.execution.engine import execute_strategy
 
 def run_strategy(symbol, strategy):
     
@@ -29,7 +30,14 @@ def run_strategy(symbol, strategy):
           
     
     signal_data = strategy.generate_signal(feature_data)
-    backtest_data = run_backtest(signal_data)
+    execution_result = execute_strategy(signal_data)
+
+    backtest_data = run_backtest(execution_result)
     metrics = calculate_performance_metrics(backtest_data)
 
-    return metrics
+    return RunResult(
+    feature_data=feature_data,
+    signal_data=signal_data,
+    execution_result=execution_result,
+    backtest_data=backtest_data,
+    metrics=metrics)
