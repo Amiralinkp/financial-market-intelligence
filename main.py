@@ -5,7 +5,11 @@ from financial_market_intelligence.optimization.strategy_builder import build_mo
 from financial_market_intelligence.visualization.equity_curve import plot_equity_curve
 from financial_market_intelligence.strategies.runner import run_strategy
 from financial_market_intelligence.visualization.drawdown_curve import plot_drawdown_curve
+from financial_market_intelligence.reporting.report_generator import generate_report
 
+
+start_date = "2025-01-01"
+end_date = "2025-12-31"
 
 def main():
     symbols = [
@@ -22,13 +26,11 @@ def main():
     if strategy_type == "ma":
         strategies = build_moving_average_strategies(
             ema_windows,
-            sma_windows
-        )
+            sma_windows)
 
     elif strategy_type == "rsi":
         strategies = build_rsi_strategies(
-            windows=[14]
-        )
+            windows=[14])
 
     elif strategy_type == "macd":
         strategies = build_macd_strategies()
@@ -38,13 +40,16 @@ def main():
         
 
    
-    grid_result = grid_search(symbols, strategies)
+    grid_result = grid_search(symbols, strategies, start_date, end_date)
     best_strategy = grid_result.best_strategy
     best_symbol = grid_result.best_symbol
 
 
     run_result = run_strategy(
-        best_symbol, best_strategy)
+        best_symbol, best_strategy, start_date, end_date)
+    report = generate_report(run_result)
+
+    print(report)
     
     fig = plot_equity_curve(
     run_result.backtest_data,
@@ -59,9 +64,8 @@ def main():
     drawdown_fig.savefig("reports/plots/drawdown_curve.png", dpi=300)
 
 
-    plt.show()
 
-    df = pd.DataFrame(grid_result.results)
+    df = pd.DataFrame([entry.to_dict() for entry in grid_result.results])
 
 
     columns = [
@@ -97,6 +101,5 @@ def main():
     result_df["rank"] = result_df["total_return"].rank(ascending=False, method="dense").astype(int)
     result_df.to_csv("reports/strategy_results.csv", index=False)
 
-    plt.show()
 if __name__ == "__main__" : 
     main()

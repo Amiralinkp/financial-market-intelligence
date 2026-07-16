@@ -1,4 +1,5 @@
 #import pandas as pd 
+from financial_market_intelligence.models.performance_metrics import PerformanceMetrics
 
 
 def calculate_performance_metrics(data):
@@ -11,10 +12,13 @@ def calculate_performance_metrics(data):
     drawdown = ( result["Cumulative_Return"] - running_peak ) / running_peak
     max_drawdown = drawdown.min()
 
+    return PerformanceMetrics(
 
-    return { "final_equity" : final_equity,
-            "total_return" : total_return,
-            "signal_count" : signal_count,
-            "max_drawdown" : max_drawdown
+        final_equity = final_equity,
 
-    }
+        total_return = total_return,
+
+        signal_count = signal_count,
+
+        max_drawdown = max_drawdown)
+

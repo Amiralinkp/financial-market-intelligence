@@ -2,8 +2,10 @@ import pandas as pd
 from financial_market_intelligence.strategies.moving_average import MovingAverageStrategy
 from financial_market_intelligence.strategies.runner import run_strategy
 from financial_market_intelligence.models.grid_search_result import GridSearchResult
+from financial_market_intelligence.models.grid_search_entry import GridSearchEntry
+from financial_market_intelligence.models.performance_metrics import PerformanceMetrics
 
-def grid_search(symbols, strategies):
+def grid_search(symbols, strategies, start_date, end_date):
     
 
     result = []
@@ -15,20 +17,24 @@ def grid_search(symbols, strategies):
         for strategy in strategies:
 
             try:
-                run_result = run_strategy(symbol, strategy)
-                metrics = run_result.metrics.copy()
                 
-                metrics["symbol"] = symbol
-
+                run_result = run_strategy(symbol, strategy, start_date, end_date)
                 parameters = strategy.get_parameters()
-                metrics.update(parameters)
 
-                result.append(metrics)
-                if metrics["total_return"] > best_return:
 
-                    best_return = metrics["total_return"]
+                entry = GridSearchEntry(
+                        symbol = symbol,
+                        strategy_name = strategy.__class__.__name__ ,
+                        parameters = parameters,
+                        metrics = run_result.metrics)
+                
+                result.append(entry)
+
+                if entry.metrics.total_return > best_return:
+
+                    best_return = entry.metrics.total_return
                     best_strategy = strategy
-                    best_symbol = symbol
+                    best_symbol = entry.symbol
 
                 
 

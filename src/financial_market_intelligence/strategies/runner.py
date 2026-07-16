@@ -12,14 +12,13 @@ from financial_market_intelligence.indicators import add_rsi
 from financial_market_intelligence.models.run_result import RunResult
 from financial_market_intelligence.models.execution_result import ExecutionResult
 from financial_market_intelligence.execution.engine import execute_strategy
-
-def run_strategy(symbol, strategy):
+from financial_market_intelligence.models.performance_metrics import PerformanceMetrics
+from financial_market_intelligence.analysis.trade_analyzer import analyze_trades
+def run_strategy(symbol, strategy, start_date, end_date):
     
     provider = YahooProvider()
 
-    raw_data = provider.get_historical_data( symbol=symbol,
-        start_date="2025-01-01",
-        end_date="2025-12-31")
+    raw_data = provider.get_historical_data( symbol=symbol, start_date = start_date, end_date = end_date)
 
 
     normalized_data = normalize_market_data(raw_data)
@@ -32,12 +31,19 @@ def run_strategy(symbol, strategy):
     signal_data = strategy.generate_signal(feature_data)
     execution_result = execute_strategy(signal_data)
 
+    analyze_result = analyze_trades(execution_result)
+
     backtest_data = run_backtest(execution_result)
     metrics = calculate_performance_metrics(backtest_data)
 
     return RunResult(
     feature_data=feature_data,
     signal_data=signal_data,
-    execution_result=execution_result,
     backtest_data=backtest_data,
-    metrics=metrics)
+    execution_result=execution_result,
+    trade_analysis_result=analyze_result,
+    metrics=metrics,
+    symbol = symbol,
+    strategy_name = strategy.__class__.__name__ ,
+    start_date = start_date,
+    end_date = end_date)

@@ -15,5 +15,5 @@ class Trade:
     exit_price: float
 
     direction: str
-
+    holding_bars: float
     trade_return: float

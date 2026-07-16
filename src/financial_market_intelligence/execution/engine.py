@@ -12,6 +12,7 @@ def execute_strategy(signal_data):
     pending_order = None
     entry_price = None
     entry_date = None
+    entry_bar_index = None
 
     trade_id = 1
 
@@ -21,13 +22,13 @@ def execute_strategy(signal_data):
 
         current_row = result.iloc[i]
 
-
         if pending_order == 1:
 
             position = 1
 
             entry_price = current_row["Open"]
             entry_date = result.index[i]
+            entry_bar_index = i
 
             pending_order = None
 
@@ -37,7 +38,7 @@ def execute_strategy(signal_data):
             exit_date = result.index[i]
 
             trade_return = (exit_price - entry_price) / entry_price
-
+            holding_bars = i - entry_bar_index
             trades.append(
                 Trade(
                     trade_id=trade_id,
@@ -46,6 +47,7 @@ def execute_strategy(signal_data):
                     entry_price=entry_price,
                     exit_price=exit_price,
                     direction="LONG",
+                    holding_bars=holding_bars,
                     trade_return=trade_return))
 
             trade_id += 1
@@ -54,6 +56,7 @@ def execute_strategy(signal_data):
 
             entry_price = None
             entry_date = None
+            entry_bar_index = None
 
             pending_order = None
 
