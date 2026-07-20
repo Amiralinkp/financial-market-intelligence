@@ -58,7 +58,10 @@ def _generate_performance_section(metrics):
     items = [
     ("Final Equity",f"{metrics.final_equity: .2f}"),
     ("Total Return (%)", f"{metrics.total_return: .2f}%"),
-    ("Total Signals", f"{metrics.signal_count}")]
+    ("Total Signals", f"{metrics.signal_count}"),
+    ("Sharpe Ratio", f"{metrics.sharpe_ratio:.2f}"),
+    ("Annual Volatility", f"{metrics.annualized_volatility * 100:.2f}%"),
+    ("CAGR", f"{metrics.cagr * 100:.2f}%")]
     for label, value in items:
         lines.append(f"{label:<25}: {value}")
 

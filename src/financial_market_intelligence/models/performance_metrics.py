@@ -13,6 +13,12 @@ class PerformanceMetrics :
     max_drawdown : float
 
 
+    sharpe_ratio: float
+
+    annualized_volatility: float
+    
+    cagr: float
+
 
 
 

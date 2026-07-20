@@ -11,6 +11,16 @@ def calculate_performance_metrics(data):
     running_peak = result["Cumulative_Return"].cummax()
     drawdown = ( result["Cumulative_Return"] - running_peak ) / running_peak
     max_drawdown = drawdown.min()
+    daily_returns = result["Strategy_Return"]
+    annualized_volatility = daily_returns.std() * (252 ** 0.5)
+
+    if daily_returns.std() == 0:
+        sharpe_ratio = 0
+    else:
+        sharpe_ratio = (daily_returns.mean() / daily_returns.std()) * (252 ** 0.5)
+
+    years = len(result) / 252
+    cagr = (final_equity ** (1 / years)) - 1
 
     return PerformanceMetrics(
 
@@ -20,5 +30,11 @@ def calculate_performance_metrics(data):
 
         signal_count = signal_count,
 
-        max_drawdown = max_drawdown)
+        max_drawdown = max_drawdown,
+
+        sharpe_ratio=sharpe_ratio,
+
+        annualized_volatility=annualized_volatility,
+        
+        cagr=cagr)
 
